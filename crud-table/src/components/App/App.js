@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
+import CustomInput from '../CustomInput/CustomInput';
+import CustomButton from '../CustomButton/CustonButton';
 import './App.css';
+import CustomTable from '../Customtable/CustomTable';
+ 
 
 const initialValues ={
   userName: '',
@@ -10,99 +14,104 @@ const initialValues ={
 function App() {
   const [userData, setUserData  ] = useState(initialValues)
   const [users, setUsers] = useState([]);
-  const [editableUserData, setEditableYsersData] = useState({
+  const [editableUserData, setEditableUsersData] = useState({
     isEdit: false,
     userIndex: null,
-  })
-  const isFelledField = userData.userName && userData.userSurname && userData.userSalary;
+  });
   
-  const handleRemoveClick = (index) => {
-    setUsers(users.filter((user,userIndex)=> userIndex !==index))
-  }
+  
+const isFelledFields = userData.userName && userData.userSurname && userData.userSalary;
+  
+const handleRemoveClick = ({ index }) => {
+    setUsers(users.filter((user, userIndex)=> userIndex !== index));
+  };
 
-  const handleSubmitUser =(e) =>{
+const handleSubmitUser = (e) => {
     e.preventDefault();
-    if(isFelledField){
-      if(editableUserData.isEdit){
+
+    if(isFelledFields){
+      if(editableUserData.isEdit) {
         const editedDate = users;
         editedDate.splice(editableUserData.userIndex, 1, userData)
         setUsers(editedDate);
+        setEditableUsersData({
+          isEdit: false,
+          userIndex: null,
+        })
       } else {
       setUsers((prevState)=> [...prevState, userData]);
-      setEditableYsersData({
-        isEdit: false,
-        userIndex: null,
-      })
+      
       }
       setUserData(initialValues)
     }
   }
 
-  const handleCleanClick = () => setUserData(initialValues)
+const handleCleanClick = () => setUserData(initialValues)
 
-  const handleEditClick = (data, index) =>{
-    setUserData(data)
-    setEditableYsersData({
+const handleEditClick = ({user, index}) =>{
+    setUserData(user)
+    setEditableUsersData({
       isEdit: true,
       userIndex: index,
     })
   }
 
-console.log('users:', users)
+  const handleInputChange = (e, userName) => setUserData((prevState) => ({
+    ...prevState,
+    [userName]: e.target.value
+  }))
+
   return (
     <div className="wrapper"> 
      <div className="wrapper-content">
       <div className='table-data'>
-        <table>
-          <th>#</th> 
-          <th>User Name</th>
-          <th>User Surname</th>
-          <th>User Salary</th>
-          <th>Actions</th>
-
-          <tbody>
-            {users.map((user, index)=>(
-             <tr>
-               <td>{index +1}</td>
-               <td>{user.userName}</td>
-               <td>{user.userSurname }</td>
-               <td>{user.userSalary}</td>
-               <td>
-                 <div>
-                   <button className="edit-action" onClick={()=>handleEditClick(user, index)} >edit</button>
-                   <button className='remove-action' onClick={()=>handleRemoveClick(index)}>remove</button>
-                 </div>
-               </td>
-             </tr>
-            ))}
-          </tbody>
-        </table>
+        
+        <CustomTable 
+          users={users}
+          handleEditClick={handleEditClick}
+          handleRemoveClick={handleRemoveClick}
+        />
       </div>
+
       <div className='formData'>
         <form onSubmit={handleSubmitUser} onReset={handleCleanClick}>
-         <input  placeholder="Write you name" onChange={(e)=> setUserData((prevState)=> ({
-           ...prevState,
-           userName: e.target.value
-         }))} 
-         value={userData.userName}
-         />  
-         <input  placeholder="Write you surname" onChange={(e)=> setUserData((prevState)=>({
-           ...prevState,
-           userSurname: e.target.value
-         }))}
-         value={userData.userSurname}
-         />  
-         <input  placeholder="Write you salary" onChange={(e)=> setUserData((prevState)=>({
-           ...prevState,
-           userSalary: e.target.value
-         }))} 
-         value={userData.userSalary}
-         />  
+          <CustomInput
+            placeholder = 'Write you name'
+            handleChange={handleInputChange} 
+            value={userData.userName}
+            fieldName = 'userName'
+          />
+          <CustomInput
+            placeholder = 'Write you surname'
+            handleChange={handleInputChange} 
+            value={userData.userSurname}
+            fieldName = 'userSurname'
+          />
+          <CustomInput
+            placeholder = 'Write you salary'
+            handleChange={handleInputChange} 
+            value={userData.userSalary}
+            fieldName = 'userSalary'
+          />
+         
 
-         <div className='buttons-wrapper'>
-           <button type='reset'>Clear</button>
-           <button disabled={!isFelledField} type='submit'>{editableUserData.isEdit ? 'Edit': 'Add'}</button>
-         </div>
+          <div className='buttons-wrapper'>
+          <CustomButton 
+            label="Clear"
+            classNames=''
+            handleClick={() =>{}}
+            data={null}
+            type='reset'
+          />
+          <CustomButton 
+            label={editableUserData.isEdit ? 'Edit': 'Add'}
+            classNames=''
+            handleClick={() =>{}}
+            data={null}
+            type='submit'
+          />
+           
+          </div>
         </form>
         </div>
      </div> 
