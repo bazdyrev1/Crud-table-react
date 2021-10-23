@@ -19,4 +19,6 @@ form{
     width: 100%;
     margin: 10px 0;
 }
-
+.formData{
+    margin: 0 20px;
+}

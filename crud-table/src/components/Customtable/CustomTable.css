@@ -4,7 +4,7 @@ table{
     border: 1px solid grey;
 }
 th{
-    min-width: 100px;
+    min-width: 150px;
     border: 1px solid grey;
     text-align: left;
     padding: 5px;

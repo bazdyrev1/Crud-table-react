@@ -11,10 +11,10 @@ const CustomButton = ({
 }) => {
     return (
         <button 
-        className={classNames} 
-        onClick={() => handleClick(data)}
-        type={type}
-        disabled={disabled}
+            className={classNames} 
+            onClick={() => handleClick(data)}
+            type={type}
+            disabled={disabled}
         >
             {label}
         </button>

@@ -15,7 +15,6 @@ const CustomTable = ({
           <th>User Surname</th>
           <th>User Salary</th>
           <th>Actions</th>
-
           <tbody>
           {users.map((user, index)=>(
              <tr>
@@ -38,8 +37,7 @@ const CustomTable = ({
                     handleClick={handleRemoveClick}
                     data= {({index})}
                     type='button'
-                  />
-                   
+                  />  
                  </div>
                </td>
              </tr>
